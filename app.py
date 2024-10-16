@@ -284,7 +284,7 @@ def get():
     )
     return page
 
-# Websocket enpoint of update-data
+# Websocket endpoint of update-data
 async def websocket_endpoint(websocket: WebSocket):
     await connection_manager.connect(websocket)
     print("New client connected.")
