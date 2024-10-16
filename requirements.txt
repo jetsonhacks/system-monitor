@@ -1,2 +1,2 @@
+python-fasthtml
 psutil
-fasthtml
