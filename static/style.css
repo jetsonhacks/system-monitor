@@ -1,0 +1,191 @@
+.model-title {
+    font-family: 'Roboto', sans-serif;
+    color: lightgray;
+    text-align: center;
+    font-weight: 400;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 20px;
+}
+
+.chart-container {
+    background-color: #2a2b2d;
+    padding: 10px;
+    border-radius: 15px;
+    width: 240px;
+    height: 140px;
+    margin: 0;
+    position: relative;
+    perspective: 1000px; /* Enable 3D perspective for the flip effect */
+}
+
+.chart {
+    display: block;
+    width: 240px;
+    height: 60px;
+    max-height: 60px;
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.chart-container h3 {
+    font-family: 'Roboto', sans-serif;
+    color: lightslategrey;
+    text-align: center;
+    margin-top: 16px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 2em;
+}
+
+.chart-container h2 {
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    font-size: 1.5em;
+    text-align: center;
+    padding: 10px;
+    background-color: #252527;
+    border-radius: 10px;
+    width: 80px;
+    margin-top: 8px;
+    margin-left: 38px;
+    margin-bottom: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+canvas {
+    display: block; 
+    margin: auto;
+}
+
+.usagePercentNumber {
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    font-size: 1.5em;
+    display: inline-block;
+    width: 50px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.usagePercentSign {
+    font-family: 'Roboto', sans-serif;
+    color: lightslategray;
+    font-size: 1.0em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.chart-front, .chart-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transition: transform 0.6s;
+    border-radius: 15px;
+    box-sizing: border-box;
+    padding: 10px;
+    will-change: transform;
+}
+
+.chart-front {
+    z-index: 2;
+    transform: rotateY(0deg);
+}
+
+.chart-back {
+    z-index: 1; 
+    background-color: #333;
+    transform: rotateY(180deg);
+    padding: 20px;
+    padding-top: 40px;
+}
+
+.chart-container.flipped .chart-front {
+    transform: rotateY(-180deg);
+}
+
+.chart-container.flipped .chart-back {
+    transform: rotateY(0deg);
+}
+
+.info-button {
+    position: absolute;
+    top: -4px;
+    right: -28px;
+    fill: lightslategray;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.info-back-button {
+    color: lightslategray;
+    font-size: 1.5em;
+    width: 32px;
+    height: 32px;
+    background-color: #252527;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; 
+    top: 3px; 
+    right: 2px;
+}
+
+.memory-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;  
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    font-family: 'Roboto Mono', sans-serif;
+    color: white;
+    width: 100%;
+}
+
+.memory-info-label {
+    flex: 1;
+    padding-right: 10px;  
+    text-align: left;
+}
+
+.memory-info-value {
+    flex: 0;
+    min-width: 80px;  
+    text-align: right;
+    white-space: nowrap;  
+    
+}
+
+.connection-status  {
+    font-family: 'Roboto', sans-serif;
+    color: lightslategrey;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    display: none;
+}
+
+body {
+    background-color: #252527;
+}

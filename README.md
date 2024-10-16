@@ -5,6 +5,10 @@ A web enabled system monitor for NVIDIA Jetson Development Kits
 
 Requires Python 3.10+ - For Jetson Nano & Xaviers, consider using a virtual environment (e.g. Anaconda)
 
-Straightforward example of creating a webserver to deliver a subset of system data such as CPU, GPU and memory usage.
+An example of creating a webserver to deliver a subset of system data such as CPU, GPU and memory usage.
+
 Websockets allow refreshing the data easily.
 
+You will need to install the requirements.txt
+
+pip install -r requirements.txt
