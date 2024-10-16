@@ -15,3 +15,5 @@ You will need to install the requirements.txt
 ```
 pip install -r requirements.txt
 ```
+
+To enable WebSockets when connecting from another machine, you need to set the server address in the server_config.ini file. The IP address should be the IP address of the server (this) machine.
