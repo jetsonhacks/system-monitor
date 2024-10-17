@@ -29,17 +29,26 @@ latest_data = {
 class ConnectionManager:
     def __init__(self):
         self.active_connections = set()
+        self.lock = asyncio.Lock()  # Lock to protect access to active_connections
 
-    async def connect(self, websocket: WebSocket):
+    async def connect(self, websocket):
         await websocket.accept()
-        self.active_connections.add(websocket)
+        async with self.lock:  # Acquire lock to safely add connection
+            self.active_connections.add(websocket)
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
+    async def disconnect(self, websocket):
+        async with self.lock:  # Acquire lock to safely remove connection
+            if websocket in self.active_connections:
+                self.active_connections.remove(websocket)
 
-    async def broadcast(self, message: str):
-        for connection in list(self.active_connections):
-            await connection.send_text(message)
+    async def broadcast(self, message):
+        async with self.lock:  # Acquire lock to safely iterate over connections
+            connections = list(self.active_connections)  # Make a copy of the connections
+        for connection in connections:
+            try:
+                await connection.send_text(message)
+            except Exception as e:
+                print(f"Failed to send message: {e}")
 
 # Create an instance of ConnectionManager
 connection_manager = ConnectionManager()
