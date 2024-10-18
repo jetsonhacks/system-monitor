@@ -31,24 +31,31 @@ class ConnectionManager:
         self.active_connections = set()
         self.lock = asyncio.Lock()  # Lock to protect access to active_connections
 
-    async def connect(self, websocket):
+    async def connect(self, websocket: WebSocket):
         await websocket.accept()
-        async with self.lock:  # Acquire lock to safely add connection
+        async with self.lock:
             self.active_connections.add(websocket)
 
-    async def disconnect(self, websocket):
-        async with self.lock:  # Acquire lock to safely remove connection
+    async def disconnect(self, websocket: WebSocket):
+        async with self.lock:
             if websocket in self.active_connections:
                 self.active_connections.remove(websocket)
 
-    async def broadcast(self, message):
-        async with self.lock:  # Acquire lock to safely iterate over connections
-            connections = list(self.active_connections)  # Make a copy of the connections
+    async def broadcast(self, message: str):
+        # Make a copy of the connections list while holding the lock
+        async with self.lock:
+            connections = list(self.active_connections)
+
         for connection in connections:
             try:
                 await connection.send_text(message)
+            except WebSocketDisconnect:
+                await self.disconnect(connection)
             except Exception as e:
-                print(f"Failed to send message: {e}")
+                await self.disconnect(connection)
+
+    async def remove_stale_connection(self, websocket: WebSocket):
+        await self.disconnect(websocket) 
 
 # Create an instance of ConnectionManager
 connection_manager = ConnectionManager()
@@ -306,7 +313,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except Exception as e:
         print(f"WebSocket connection closed: {e}")
     finally:
-        connection_manager.disconnect(websocket)
+        await connection_manager.disconnect(websocket)
         print("Client disconnected.")
 
 app.routes.append(WebSocketRoute('/update-data', websocket_endpoint))
