@@ -1,6 +1,7 @@
 # system-monitor
 A web enabled system monitor for NVIDIA Jetson Development Kits
 
+![Remote monitor of Jetson Nano](images/sys_mon_nano.gif)
 ## Work in progress
 
 Building Documentation and Video, full article on JetsonHacks.com soon!
@@ -17,3 +18,9 @@ pip install -r requirements.txt
 ```
 
 To enable WebSockets when connecting from another machine, you need to set the server address in the server_config.ini file. The IP address should be the IP address of the server (this) machine.
+
+## Notes
+* October, 2024
+* Initial Release
+* Tested on Jetson Nano, Jetson Xavier, and Jetson Orin
+* Requires Python 3.10+
