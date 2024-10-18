@@ -35,3 +35,5 @@ To enable WebSockets when connecting from another machine, you need to set the s
 * Initial Release
 * Tested on Jetson Nano, Jetson Xavier, and Jetson Orin
 * Requires Python 3.10+
+* FastHML 0.6.13
+* psutil 6.1.0
