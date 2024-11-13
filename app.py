@@ -123,47 +123,14 @@ async def update_data():
 
 app, rt = fast_app(pico=False, htmx=False, htmlkw={'lang':'en-US'})
 
-# This script is the websocket code for the client browser
-# Double curly braces are used in the f-string to escape { } characters
-# statusElement is the div which tells if the client is disconnected
-data_update_websocket_script = f"""
-<script>
-
-    const statusElement = document.getElementById('connection-status');
-
-    const ws = new WebSocket('ws://{host_ip}:{port}/update-data');
-    
-    ws.onmessage = function(event) {{
-        const data = event.data;
-        try {{
-            // Parse the incoming data and update the UI
-            const newData = JSON.parse(event.data);
-            updateUI(newData);
-        }} catch (error) {{
-            console.error("Failed to parse incoming data:", error);
-        }}
-    }};
-
-    ws.onopen = function(event) {{
-        console.log("WebSocket connection established.");
-        statusElement.style.display = "none";
-    }};
-
-    ws.onclose = function(event) {{
-        console.log("WebSocket connection closed.");
-        statusElement.innerText = "Disconnected";
-        statusElement.style.color = "lightslategrey";
-        statusElement.style.display = "block";
-    }};
-
-    ws.onerror = function(event) {{
-        console.error("WebSocket error:", event);
-        statusElement.innerText = "Connection Error";
-        statusElement.style.color = "orange";
-        statusElement.style.display = "block";
-    }};
-</script>
-"""
+# This script sets the host IP address and port number of the web server
+# So that the web page knows the address of the websocket.
+setup_script = f''' 
+    <script>
+        const hostIp = '{host_ip}';
+        const port = '{port}';
+    </script>
+'''
 
 @app.on_event("startup")
 async def startup_event():
@@ -293,8 +260,8 @@ def get():
             cls = "dashboard-container"
         ),
         Div("Disconnected", id="connection-status", cls="connection-status"),
+        NotStr(setup_script),
         Script(src="/static/sys_mon_dashboard.js", type="text/javascript"),
-        NotStr(data_update_websocket_script),
         Script(src="https://cdn.jsdelivr.net/npm/chart.js",
                type="text/javascript")
     )

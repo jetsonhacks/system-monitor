@@ -32,7 +32,7 @@ print(MODEL_NAME)
 def get_gpu_load():
     with open(GPU_LOAD_PATH, 'r') as f:
         value = f.read()
-    return float(value.strip()) / 10
+    return int(float(value.strip()) / 10)
 
 
 # Read the GPU usage and gather the rest of the system statistics
@@ -58,17 +58,28 @@ setup_script = f'''
     <script src="../static/app_websocket.js" defer></script>
 '''
 
-print(setup_script)
-
 @rt('/')
 def get():
     gpu_load = get_gpu_load()
     page = Html( Head(Title('Jetson Websocket Example'),
-                NotStr(setup_script)), 
-    Body( Div( H3(MODEL_NAME), 
-            Span(f"GPU Load: "),
-            Span(f"{gpu_load}", id="gpu_load"),
-            Span("%"),
+                NotStr(setup_script)),
+                Link(rel="stylesheet",
+             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"),
+                Link(rel="stylesheet", href="../static/style_tutorial.css"), 
+    Body( Div( H2(MODEL_NAME), 
+            # GPU Chart Container
+            Div(
+                Div(
+                    H3("GPU"),
+                    H2(
+                        Span(" 0", id="gpu_load", cls="usagePercentNumber"), Span(
+                            "%", id="usagePercentSignGpu", cls="usagePercentSign"),
+                        id="usagePercentageGpu"
+                    ),
+                    cls="chart-header"  
+                ),
+                cls="chart-container"  
+            ),
             style="text-align: center;"),
         Div("Disconnected", id="connection-status", cls="connection-status")
     ))

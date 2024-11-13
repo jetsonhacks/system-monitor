@@ -1,17 +1,12 @@
-// Import Chart.js or include it via a script tag in your HTML
-// <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+const statusElement = document.getElementById('connection-status');
+const ws = new WebSocket(`ws://${hostIp}:${port}/update-data`);
+
+/* Graph */
+const charts = {};
 
 let lastData = {
-    cpu_percent: 0,
     gpu_percent: 0,
-    memory_percent: 0,
-    memory_used: "0.00 GB",
-    cached_files: "0.00 GB",
-    swap_used: "0.00 MB",
-    physical_memory: "4.00 GB"
 };
-
-const charts = {};
 
 // Function to update the UI based on the latest data
 function updateUI(data) {
@@ -21,20 +16,12 @@ function updateUI(data) {
     // Update the values on the front face
     const percentageElements = {
         gpu: document.getElementById('usagePercentageGpu'),
-        cpu: document.getElementById('usagePercentageCpu'),
-        memory: document.getElementById('usagePercentageMemory')
     };
 
     for (const key in percentageElements) {
         const value = Math.floor(lastData[`${key}_percent`]);
         percentageElements[key].innerHTML = `<span class="usagePercentNumber" id="usageNumber${key.charAt(0).toUpperCase() + key.slice(1)}">${value}</span><span class="usagePercentSign" id="usagePercentSign${key.charAt(0).toUpperCase() + key.slice(1)}">%</span>`;
     }
-
-    // Update the back face memory details
-    document.getElementById('physicalMemory').innerText = `${lastData.physical_memory}`;
-    document.getElementById('memoryUsed').innerText = `${lastData.memory_used}`;
-    document.getElementById('cachedFiles').innerText = `${lastData.cached_files}`;
-    document.getElementById('swapUsed').innerText = `${lastData.swap_used}`;
 
     // Update the charts
     for (const key in charts) {
@@ -119,74 +106,6 @@ function createAnnotation(yValue, label) {
     };
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const chartConfigs = {
-        cpu: {
-            ctx: document.getElementById('cpuChart').getContext('2d'),
-            label: 'CPU Usage (%)',
-            type: 'line',
-            maxPoints: 60,
-            borderColor: 'rgba(135, 199, 247, 0.8)',
-            borderWidth: 2,
-            backgroundColor: 'rgba(135, 199, 247, 0.2)',
-            pointRadius: 0,
-            annotation: createAnnotation(75, 'High Usage')
-        },
-        gpu: {
-            ctx: document.getElementById('gpuChart').getContext('2d'),
-            label: 'GPU Usage (%)',
-            type: 'line',
-            maxPoints: 60,
-            borderColor: 'rgba(135, 192, 143, 0.8)',
-            borderWidth: 2,
-            backgroundColor: 'rgba(135, 192, 143, 0.2)',
-            pointRadius: 0,
-            annotation: createAnnotation(80, 'High Usage')
-        },
-        memory: {
-            ctx: document.getElementById('memoryChart').getContext('2d'),
-            label: 'Memory Usage (%)',
-            type: 'line',
-            maxPoints: 60,
-            borderColor: 'rgba(181, 135, 232, 0.8)',
-            borderWidth: 2,
-            backgroundColor: 'rgba(181, 135, 232, 0.2)',
-            pointRadius: 0,
-            annotation: createAnnotation(70, 'High Usage')
-        }
-    };
-
-    for (const key in chartConfigs) {
-        charts[key] = createChart(chartConfigs[key].ctx, chartConfigs[key]);
-    }
-
-    // Memory Container Flip Handling
-    const memoryContainer = document.querySelector('.memory-container');
-    const frontFace = memoryContainer.querySelector('.chart-front');
-    const backFace = memoryContainer.querySelector('.chart-back');
-
-    // Handle flipping logic
-    const infoButton = frontFace.querySelector('.info-button');
-    if (infoButton) {
-        infoButton.onclick = function () {
-            memoryContainer.classList.toggle('flipped');
-        };
-    }
-
-    const backButton = backFace.querySelector('.info-back-button');
-    if (backButton) {
-        backButton.onclick = function () {
-            memoryContainer.classList.toggle('flipped');
-        };
-    }
-
-});
-
-// Websocket code to get system monitor info from server
-// hostIp and port are from a <script> element the server inserts on the page
-const statusElement = document.getElementById('connection-status');
-const ws = new WebSocket(`ws://${hostIp}:${port}/update-data`);
-
 function updateStatus (text, color) {
     statusElement.innerText = text;
     statusElement.style.color = color;
@@ -217,3 +136,23 @@ ws.onerror = (event) => {
     updateStatus("Connection Error", "orange");
 };
 
+document.addEventListener("DOMContentLoaded", function () {
+    const chartConfigs = {
+        gpu: {
+            ctx: document.getElementById('gpuChart').getContext('2d'),
+            label: 'GPU Usage (%)',
+            type: 'line',
+            maxPoints: 60,
+            borderColor: 'rgba(135, 192, 143, 0.8)',
+            borderWidth: 2,
+            backgroundColor: 'rgba(135, 192, 143, 0.2)',
+            pointRadius: 0,
+            annotation: createAnnotation(80, 'High Usage')
+        },
+    };
+
+    for (const key in chartConfigs) {
+        charts[key] = createChart(chartConfigs[key].ctx, chartConfigs[key]);
+    }
+
+});

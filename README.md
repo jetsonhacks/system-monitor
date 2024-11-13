@@ -31,9 +31,13 @@ pip install -r requirements.txt
 To enable WebSockets when connecting from another machine, you need to set the server address in the server_config.ini file. The IP address should be the IP address of the server (this) machine.
 
 ## Notes
+* **November, 2024**
+* Expanded Tutorial 
+* Better separation of Javascript into external .js files
+
 * **October, 2024**
 * Initial Release
 * Tested on Jetson Nano, Jetson Xavier, and Jetson Orin
-* Requires Python 3.10+
+* Requires Python 3.10+ (tested in Anaconda enviornment)
 * FastHML 0.6.13
 * psutil 6.1.0

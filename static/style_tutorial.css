@@ -1,0 +1,89 @@
+body {
+    background-color: #252527;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+.chart-container {
+    background-color: #2a2b2d;
+    padding: 10px;
+    border-radius: 15px;
+    width: 240px;
+    height: 140px;
+    margin: 0;
+    position: relative;
+    perspective: 1000px; /* Enable 3D perspective for the flip effect */
+}
+
+.chart {
+    display: block;
+    width: 240px;
+    height: 60px;
+    max-height: 60px;
+}
+
+.chart-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.chart-container h3 {
+    font-family: 'Roboto', sans-serif;
+    color: lightslategrey;
+    text-align: center;
+    margin-top: 16px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    font-size: 2em;
+}
+
+.chart-container h2 {
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    font-size: 1.5em;
+    text-align: center;
+    padding: 10px;
+    background-color: #252527;
+    border-radius: 10px;
+    width: 80px;
+    margin-top: 8px;
+    margin-left: 38px;
+    margin-bottom: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+canvas {
+    display: block; 
+    margin: auto;
+}
+
+.usagePercentNumber {
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    font-size: 1.5em;
+    display: inline-block;
+    width: 50px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.usagePercentSign {
+    font-family: 'Roboto', sans-serif;
+    color: lightslategray;
+    font-size: 1.0em;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+/* For Graph */
+.chart-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;  
+}
