@@ -1,6 +1,5 @@
 from fasthtml.common import *
 from starlette.websockets import WebSocket
-from data_app import MODEL_NAME, get_gpu_load
 import asyncio
 import json
 
