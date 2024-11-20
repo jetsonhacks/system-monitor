@@ -2,9 +2,9 @@
 A web enabled system monitor for NVIDIA Jetson Development Kits
 
 ![Remote monitor of Jetson Nano](images/sys_mon_nano.gif)
-## Work in progress
+## Video Tutorial
 
-Building Documentation and Video, full article on JetsonHacks.com soon!
+[Watch the video on YouTube](https://youtu.be/zb6zoEMUyi0)
 
 Requires Python 3.10+ - For Jetson Nano & Xaviers, consider using a virtual environment (e.g. Anaconda)
 
